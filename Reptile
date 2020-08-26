@@ -1,0 +1,25 @@
+# 案例1——京客隆店铺信息
+import requests
+from lxml import etree
+import pa
+
+web = 'http://www.jkl.com.cn/cn/shop.aspx'
+UA伪装 = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36'}
+
+# 1.拿取每个城区网址
+data = requests.get(url=web, headers=UA伪装).text
+analysis = etree.HTML(data)
+area = analysis.xpath('//div[@class="infoLis"]//@href')
+for area1 in area:
+    A = 'http://www.jkl.com.cn/cn/' + area1
+    data1 = requests.get(url=A, headers=UA伪装).text
+    analysis1 = etree.HTML(data1)
+    name = analysis1.xpath('//span[@class="con01"]/text()')
+    add = analysis1.xpath('//span[@class="con02"]/text()')
+    phone = analysis1.xpath('//span[@class="con03"]/text()')
+    time = analysis1.xpath('//span[@class="con04"]/text()')
+    list = []
+    for name1 in name:
+        new_data = name1.strip()
+        list.append(new_data)
+    print(list)
